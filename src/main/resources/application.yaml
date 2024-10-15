@@ -1,0 +1,40 @@
+#hostname: http://localhost
+server:
+  port: 9080
+
+spring:
+  application:
+    name: api-gateway-service-for-consul
+  output:
+    ansi:
+      enabled: ALWAYS
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        register: true
+        prefer-ip-address: true
+    gateway:
+      routes:
+        - id: service-a-route
+          uri: lb://service-a
+          predicates:
+            - Path=/api/v1/client-a/**
+
+logging:
+  level:
+    org.zalando.logbook: DEBUG
+    org.springframework.cloud.gateway: TRACE
+logbook:
+  filter:
+    enabled: true     # Enables request/response logging
+  include:
+    request: true      # Log incoming requests
+    response: true     # Log outgoing responses
+  obfuscate:
+    headers:           # Mask sensitive headers
+      - Authorization
+      - Cookie
+  format:
+    style: http
