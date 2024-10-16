@@ -21,7 +21,11 @@ spring:
           uri: lb://service-a
           predicates:
             - Path=/api/v1/client-a/**
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 logging:
   level:
     org.zalando.logbook: DEBUG
